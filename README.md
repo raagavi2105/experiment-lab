@@ -6,7 +6,7 @@ Decide whether to ship an A/B test, plan its sample size, and find out why a met
 - **Experiment analysis:** two-proportion z-test, Bayesian P(treatment better), sample-ratio-mismatch check, guardrail metric, CUPED variance reduction, and a SHIP / DO NOT SHIP / INCONCLUSIVE / INVALID verdict.
 - **Sample size calculator:** users per arm and test duration for a given baseline and minimum detectable lift.
 - **Root cause:** ranks which dimension and values explain a metric drop (Adtributor algorithm, Bhagwan et al., NSDI 2014).
-- **AI decision memo:** Groq (Llama 3.3 70B) drafts a short memo from the computed numbers only, via a serverless function so the API key never reaches the browser.
+- **AI decision memo:** Groq (gpt-oss-120b) drafts a short memo from the computed numbers only, via a serverless function so the API key never reaches the browser.
 
 ## Validation (reproducible: `npm run eval`, fixed seeds)
 All results are from simulations with known ground truth, not production traffic.
