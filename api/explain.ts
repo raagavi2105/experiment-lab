@@ -13,10 +13,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${key}` },
     body: JSON.stringify({
-      model: 'openai/gpt-oss-120b',
+      model: 'qwen/qwen3.8-27b',
       temperature: 0.2,
-      max_tokens: 900,
-      reasoning_effort: 'low',
+      max_tokens: 700,
       messages: [
         { role: 'system', content: 'You are a senior product analyst. Given computed experiment or metric-drop results, write a concise decision memo for a product manager: 1) the call, 2) the evidence with the key numbers, 3) risks and the next step. Use only the numbers provided. Never invent figures. Max 150 words.' },
         { role: 'user', content: payload },

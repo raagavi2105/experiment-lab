@@ -186,8 +186,9 @@ export function bayesBinary(xC: number, nC: number, xT: number, nT: number, draw
     const l = (pT - pC) / pC;
     liftSum += l; lifts.push(l);
   }
+  const sample = lifts.filter((_, i) => i % 10 === 0);
   lifts.sort((a, b) => a - b);
-  return { probTreatmentBetter: wins / draws, expectedLift: liftSum / draws, credible95: [lifts[Math.floor(draws * 0.025)], lifts[Math.floor(draws * 0.975)]] as [number, number] };
+  return { posterior: sample, probTreatmentBetter: wins / draws, expectedLift: liftSum / draws, credible95: [lifts[Math.floor(draws * 0.025)], lifts[Math.floor(draws * 0.975)]] as [number, number] };
 }
 
 // ---- decision logic ----
@@ -210,4 +211,31 @@ export function decide(primary: TestResult, srm: { mismatch: boolean }, guardrai
   if (sig && primary.effect < 0) { reasons.push('Primary metric got significantly worse.'); return { verdict: 'DO NOT SHIP' as const, reasons }; }
   reasons.push('No statistically significant effect on the primary metric. Consider a larger sample or a bigger change.');
   return { verdict: 'INCONCLUSIVE' as const, reasons };
+}
+
+// ---- power curve: analytic power of a two-proportion test at n per arm ----
+export function powerAt(baseline: number, relMde: number, nPerArm: number, alpha = 0.05): number {
+  const p1 = baseline, p2 = baseline * (1 + relMde);
+  const se = Math.sqrt((p1 * (1 - p1) + p2 * (1 - p2)) / nPerArm);
+  return normCdf(Math.abs(p2 - p1) / se - normInv(1 - alpha / 2));
+}
+
+// ---- peeking simulator: A/A tests checked at every look vs once at the end ----
+export function simulatePeeking(looks: number, perLook: number, sims = 1500, p = 0.1, seed = 99) {
+  const r = rng(seed);
+  let anyHit = 0, finalHit = 0;
+  const sd = Math.sqrt(p * (1 - p));
+  for (let s = 0; s < sims; s++) {
+    let sumC = 0, sumT = 0, hitEver = false, hitFinal = false;
+    for (let l = 1; l <= looks; l++) {
+      sumC += perLook * p + Math.sqrt(perLook) * sd * r.normal();
+      sumT += perLook * p + Math.sqrt(perLook) * sd * r.normal();
+      const n = l * perLook, pc = sumC / n, pt = sumT / n, pool = (pc + pt) / 2;
+      const se = Math.sqrt(pool * (1 - pool) * 2 / n);
+      const pv = 2 * (1 - normCdf(Math.abs((pt - pc) / se)));
+      if (pv < 0.05) { hitEver = true; if (l === looks) hitFinal = true; }
+    }
+    if (hitEver) anyHit++; if (hitFinal) finalHit++;
+  }
+  return { peekingFalsePositive: anyHit / sims, singleLookFalsePositive: finalHit / sims, sims, looks };
 }
