@@ -1,0 +1,56 @@
+{
+  "aa_false_positive_rate": {
+    "sims": 5000,
+    "nPerArm": 20000,
+    "rate": 0.051,
+    "nominal": 0.05
+  },
+  "power_calibration": [
+    {
+      "relMde": 0.03,
+      "nPerArm": 159066,
+      "empiricalPower": 0.802,
+      "targetPower": 0.8
+    },
+    {
+      "relMde": 0.05,
+      "nPerArm": 57763,
+      "empiricalPower": 0.796,
+      "targetPower": 0.8
+    },
+    {
+      "relMde": 0.1,
+      "nPerArm": 14751,
+      "empiricalPower": 0.8053333333333333,
+      "targetPower": 0.8
+    }
+  ],
+  "cuped": {
+    "rho": 0.7,
+    "theoreticalVarReduction": 0.48999999999999994,
+    "measuredVarReduction": 0.4896655114769795,
+    "powerWithout": 0.5845,
+    "powerWith": 0.8735,
+    "nPerArm": 1500,
+    "effectSd": 0.08
+  },
+  "srm": {
+    "sims": 5000,
+    "totalUsers": 100000,
+    "falseAlarmRate": 0.0008,
+    "detectionRateAt51_5pct": 1,
+    "threshold": "p < 0.001"
+  },
+  "root_cause": {
+    "trials": 1000,
+    "scenario": "one dimension-value drops 25-60%, global 3% drift, 2% noise, 4 dimensions, 160 cells",
+    "adtributor": {
+      "dimensionAccuracy": 0.991,
+      "dimensionAndElementAccuracy": 0.987
+    },
+    "naiveLargestDrop": {
+      "dimensionAccuracy": 0.687,
+      "dimensionAndElementAccuracy": 0.676
+    }
+  }
+}
