@@ -10,7 +10,7 @@ body:after{content:"";position:fixed;inset:0;z-index:-1;background-image:linear-
 .nv svg{width:22px;height:22px}.nv:hover{color:var(--tx);background:rgba(120,160,255,.08)}
 .nv.on{color:var(--cy);background:rgba(34,211,238,.1);box-shadow:inset 0 0 0 1px rgba(34,211,238,.35),0 0 20px rgba(34,211,238,.12)}
 .nv kbd{position:absolute;top:4px;right:6px;font:10px var(--mono);opacity:.4}
-.main{padding:26px clamp(16px,3vw,44px) 90px;max-width:1240px;width:100%}
+.main{padding:26px clamp(16px,3vw,52px) 90px;width:100%;min-width:0}
 .top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:22px;flex-wrap:wrap}
 .crumb{font:12px var(--mono);letter-spacing:.18em;color:var(--cy);text-transform:uppercase}
 h1{font-size:clamp(28px,4vw,44px);letter-spacing:-.03em;line-height:1.05;margin:6px 0 8px;font-weight:700}
